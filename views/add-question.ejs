@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати запитання</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Додати нове запитання</h1>
+        <form action="/add-question" method="POST">
+            <label for="language">Мова:</label>
+            <select name="language" id="language">
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+                <option value="js">JavaScript</option>
+            </select><br>
+            <label for="level">Рівень:</label>
+            <select name="level" id="level">
+                <option value="junior">Junior</option>
+                <option value="middle">Middle</option>
+                <option value="senior">Senior</option>
+            </select><br>
+            <label for="question">Запитання:</label>
+            <textarea name="question" id="question" rows="4" required></textarea><br>
+            <label for="options">Опції (розділені новим рядком):</label>
+            <textarea name="options" id="options" rows="4" required></textarea><br>
+            <label for="answer">Індекс правильної відповіді (починаючи з 0):</label>
+            <input type="number" name="answer" id="answer" required><br>
+            <button type="submit">Додати запитання</button>
+        </form>
+    </div>
+</body>
+</html>

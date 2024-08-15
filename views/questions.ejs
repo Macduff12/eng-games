@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Питання</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Питання для <%= userName %></h1>
+    <form action="/answer" method="POST">
+      <p><%= question.question %></p>
+      <% question.options.forEach((option, i) => { %>
+        <button type="submit" name="answer" value="<%= i %>"><%= option %></button>
+      <% }) %>
+      <input type="hidden" name="questionIndex" value="<%= index %>">
+    </form>
+    <% if (correct) { %>
+      <p class="message correct">Правильна відповідь! Молодець!</p>
+    <% } %>
+    <% if (incorrect) { %>
+      <p class="message incorrect">Неправильна відповідь, спробуйте ще раз.</p>
+    <% } %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Залиште ваш відгук</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.3s;
+        }
+        body:hover {
+            background-color: #e0e0e0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .container:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        h1 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        button:active {
+            background-color: #003d80;
+        }
+        .message {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        #feedbackList {
+            margin-top: 20px;
+            transition: opacity 0.3s;
+        }
+        .feedback-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .feedback-item:last-child {
+            border-bottom: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Залиште ваш відгук</h1>
+        <form id="feedbackForm">
+            <label for="name">Ваше ім'я:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Ваша електронна пошта:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Ваш відгук:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            
+            <button type="submit">Відправити</button>
+        </form>
+        <div id="message" class="message"></div>
+        <button id="viewFeedbacks">Переглянути відгуки</button>
+        <div id="feedbackList"></div>
+    </div>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message')
+            };
+
+            fetch('/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById('message').innerText = 'Ваш відгук було надіслано!';
+                document.getElementById('feedbackForm').reset();
+            })
+            .catch(error => {
+                console.error('Помилка:', error);
+                document.getElementById('message').innerText = 'Не вдалося надіслати відгук. Спробуйте ще раз.';
+            });
+        });
+
+        document.getElementById('viewFeedbacks').addEventListener('click', function() {
+            fetch('/feedbacks')
+                .then(response => response.json())
+                .then(data => {
+                    const feedbackList = document.getElementById('feedbackList');
+                    feedbackList.innerHTML = ''; // Очищення попередніх відгуків
+                    
+                    if (data.length === 0) {
+                        feedbackList.innerHTML = '<p>Немає відгуків.</p>';
+                        return;
+                    }
+
+                    data.forEach(feedback => {
+                        const feedbackItem = document.createElement('div');
+                        feedbackItem.className = 'feedback-item';
+                        feedbackItem.innerHTML = `
+                            <strong>${feedback.name}</strong> (${feedback.email})
+                            <p>${feedback.message}</p>
+                        `;
+                        feedbackList.appendChild(feedbackItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Помилка:', error);
+                    document.getElementById('feedbackList').innerHTML = 'Не вдалося завантажити відгуки. Спробуйте ще раз.';
+                });
+        });
+    </script>
+</body>
+</html>
+
+

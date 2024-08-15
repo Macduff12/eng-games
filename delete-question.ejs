@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видалення запитання</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Видалити запитання</h1>
+        <p>Ви впевнені, що хочете видалити запитання?</p>
+        <form action="/delete-question" method="POST">
+            <input type="hidden" name="id" value="<%= question.id %>">
+            <button type="submit">Видалити</button>
+            <a href="/view-questions">Скасувати</a>
+        </form>
+    </div>
+</body>
+</html>

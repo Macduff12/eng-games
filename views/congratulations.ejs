@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вітаємо!</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Ваші стилі тут -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #acb;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background-bear {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 300px;
+      z-index: 1;
+      animation: bearMove 10s infinite alternate;
+    }
+
+    .bear {
+      width: 100%;
+      animation: updown 2s infinite alternate;
+    }
+
+    @keyframes bearMove {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes updown {
+      to {
+        transform: translateY(40px);
+      }
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+      background: #ffffff;
+      margin-top: 50px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    p {
+      font-size: 18px;
+      color: #666;
+    }
+
+    .returnPage {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .returnPage a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Модальне вікно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000; /* Високий z-index для модального вікна */
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #recommendations {
+      margin-top: 20px;
+    }
+
+    .recommendation-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-bear">
+    <svg class="bear" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <!-- Вставте тут ваш SVG-код ведмедя -->
+      <circle cx="50" cy="50" r="40" fill="#000"/>
+      <!-- Зразок -->
+    </svg>
+  </div>
+
+  <div class="container">
+    <h1>Вітаємо, <span id="userName"><!-- Ім'я користувача --></span>!</h1>
+    <p>Ви успішно пройшли всі питання!</p>
+    <button class="recommendation-button" id="showRecommendations">Рекомендації</button>
+    <button class="returnPage"><a href="/">Повернутися на головну</a></button>
+  </div>
+
+  <!-- Модальне вікно -->
+  <div id="recommendationModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Рекомендації</h2>
+      <p id="recommendation-message"></p>
+    </div>
+  </div>
+
+  <script>
+    async function loadRecommendations() {
+      try {
+        const response = await fetch('recommendations.json');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      } catch (error) {
+        console.error('Failed to load recommendations:', error);
+      }
+    }
+
+    function getTestScore() {
+      // Приклад результату тесту (замініть на реальний спосіб отримання результату)
+      return 75; // Замініть на фактичний результат тесту
+    }
+
+    async function displayRecommendations() {
+      const recommendations = await loadRecommendations();
+      if (!recommendations) return;
+
+      const score = getTestScore();
+      let recommendation;
+
+      if (score < 60) {
+        recommendation = recommendations["below_60"];
+      } else if (score >= 60 && score <= 80) {
+        recommendation = recommendations["60_to_80"];
+      } else {
+        recommendation = recommendations["above_80"];
+      }
+
+      document.getElementById('userName').textContent = "Користувач"; // Замініть на фактичне ім'я
+      document.getElementById('recommendation-message').textContent = recommendation.message;
+    }
+
+    var modal = document.getElementById("recommendationModal");
+    var btn = document.getElementById("showRecommendations");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = async function() {
+      await displayRecommendations();
+      modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

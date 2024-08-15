@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Questions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+    }
+    select {
+      margin: 20px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    h2, h3 {
+      color: #333;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    button {
+      padding: 10px 15px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .edit-form {
+      margin-top: 10px;
+    }
+    .edit-form input, .edit-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .edit-form button {
+      width: auto;
+    }
+    .actions {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>View Questions</h1>
+  </header>
+  <div class="container">
+    <select id="language-filter" onchange="filterQuestions()">
+      <option value="">Оберіть мову</option>
+      <% Object.keys(questions).forEach(language => { %>
+        <option value="<%= language %>"><%= language %></option>
+      <% }) %>
+    </select>
+
+    <% Object.keys(questions).forEach(language => { %>
+      <div class="language-section" data-language="<%= language %>">
+        <h2><%= language %></h2>
+        <% Object.keys(questions[language]).forEach(level => { %>
+          <h3><%= level %></h3>
+          <ul>
+            <% questions[language][level].forEach((question, index) => { %>
+              <li>
+                <strong>Question <%= index + 1 %>:</strong> <%= question.question %>
+                <ul>
+                  <% question.options.forEach((option, optionIndex) => { %>
+                    <li><%= optionIndex + 1 %>. <%= option %></li>
+                  <% }) %>
+                </ul>
+                <strong>Correct Answer:</strong> <%= question.answer + 1 %>
+                <div class="actions">
+                  <button onclick="editQuestion('<%= language %>', '<%= level %>', <%= index %>)">Edit</button>
+                  <button onclick="deleteQuestion('<%= language %>', '<%= level %>', <%= index %>)">Delete</button>
+                </div>
+                <div class="edit-form" id="edit-form-<%= language %>-<%= level %>-<%= index %>" style="display: none;">
+                  <h4>Edit Question</h4>
+                  <form method="POST" action="/update-question">
+                    <input type="hidden" name="language" value="<%= language %>">
+                    <input type="hidden" name="level" value="<%= level %>">
+                    <input type="hidden" name="index" value="<%= index %>">
+                    <label>Question:</label>
+                    <textarea name="question" required><%= question.question %></textarea>
+                    <label>Options (comma-separated):</label>
+                    <input type="text" name="options" value="<%= question.options.join(', ') %>" required>
+                    <label>Correct Answer (index):</label>
+                    <input type="number" name="answer" value="<%= question.answer %>" required>
+                    <button type="submit">Save Changes</button>
+                  </form>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% }) %>
+      </div>
+    <% }) %>
+  </div>
+
+  <script>
+    function editQuestion(language, level, index) {
+      document.getElementById(`edit-form-${language}-${level}-${index}`).style.display = 'block';
+    }
+
+    function deleteQuestion(language, level, index) {
+      if (confirm('Are you sure you want to delete this question?')) {
+        fetch('/delete-question', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ language, level, index })
+        }).then(response => {
+          if (response.ok) {
+            location.reload();
+          } else {
+            alert('Failed to delete question');
+          }
+        });
+      }
+    }
+
+    function filterQuestions() {
+      const selectedLanguage = document.getElementById('language-filter').value;
+      const sections = document.querySelectorAll('.language-section');
+
+      sections.forEach(section => {
+        const language = section.getAttribute('data-language');
+        if (selectedLanguage === '' || selectedLanguage === language) {
+          section.style.display = 'block';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
