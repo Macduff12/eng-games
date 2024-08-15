@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редагування запитання</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Редагувати запитання</h1>
+        <form action="/update-question" method="POST">
+            <input type="hidden" name="id" value="<%= question.id %>">
+            <label for="question">Питання:</label>
+            <textarea id="question" name="question"><%= question.question %></textarea>
+            <label for="options">Варіанти:</label>
+            <textarea id="options" name="options"><%= question.options.join('\n') %></textarea>
+            <button type="submit">Оновити</button>
+        </form>
+    </div>
+</body>
+</html>

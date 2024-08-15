@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оберіть мову</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+    h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease-in;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #555;
+      animation: fadeInUp 1s 0.5s ease-in;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      animation: fadeInUp 1s 1s ease-in;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      animation: fadeInUp 1s 1.5s ease-in;
+    }
+    button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+    button:active {
+      background-color: #003d80;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Оберіть мову</h1>
+    <form action="/select-language" method="POST">
+      <label for="language">Мова:</label>
+      <select name="language" id="language">
+        <option value="java">Java</option>
+        <option value="python">Python</option>
+        <option value="js">JavaScript</option>
+      </select>
+      <button type="submit">Оберіть</button>
+    </form>
+  </div>
+</body>
+</html>
