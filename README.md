@@ -1,142 +1,116 @@
-# Quiz Application
+Звісно! Ось оновлений README з використанням смайлів для покращення оформлення:
 
-## Overview
+---
 
-This is a Node.js-based quiz application using Express.js, which features a set of quiz questions and allows users to provide feedback. The application also integrates Swagger for API documentation. It includes functionality for handling quizzes, feedback, and user interactions with cookie-based sessions.
+# README 📚
 
-## Features
+## Опис проекту 🌟
 
-- **Quiz Functionality**: Users can take quizzes with multiple questions and get their results.
-- **Feedback System**: Users can submit feedback which is stored in a JSON file.
-- **Swagger Integration**: API documentation for the endpoints is available via Swagger UI.
-- **Session Management**: User sessions are managed using cookies.
-- **Static File Serving**: Serve static files from the `public` directory.
-- **Dynamic Rendering**: Uses EJS for rendering views.
+Цей проект - веб-додаток для проведення вікторин, зворотного зв'язку та відображення результатів тестування. Додаток використовує **Express** для сервера, **EJS** для шаблонів, а **Swagger** для документування API.
 
-## Installation
+## Стек технологій 🛠️
 
-1. **Clone the Repository**:
+- **Node.js**: Середовище виконання JavaScript
+- **Express**: Фреймворк для створення веб-додатків
+- **EJS**: Шаблонізатор для рендерингу HTML
+- **Swagger**: Інструмент для документування API
+- **body-parser**: Модуль для розбору тіла запитів
+- **cookie-parser**: Модуль для обробки кукі
+- **fs**: Модуль для роботи з файловою системою
+
+## Встановлення та запуск 🚀
+
+1. **Клонування репозиторію**
 
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/.git
    ```
 
-2. **Install Dependencies**:
+2. **Перехід до директорії проекту**
 
-   Make sure you have Node.js installed. Then, run:
+   ```bash
+   cd ваш-репозиторій
+   ```
+
+3. **Встановлення залежностей**
 
    ```bash
    npm install
    ```
 
-3. **Start the Server**:
+4. **Запуск сервера**
 
    ```bash
    npm start
    ```
 
-   The server will start on port `3001` by default.
+   Сервер запуститься на порту 3001. 🌐
 
-## API Endpoints
+## Використання 📝
 
-### GET /quiz
+### Основні маршрути 🚦
 
-- **Summary**: Displays the quiz page with questions.
-- **Response**: Renders `quiz.ejs` with quiz questions.
+- **Головна сторінка**: `/`
+  - Відображає головну сторінку з можливістю вибору початку тестування. 🏠
 
-### POST /quiz
+- **Вибір мови**: `/select-language`
+  - Відображає сторінку для вибору мови тестування. 🌍
 
-- **Summary**: Submits answers and displays the result.
-- **Request Body**: `answers` and `questions`.
-- **Response**: Renders `quiz-result.ejs` with the score.
+- **Вибір рівня**: `/select-level`
+  - Відображає сторінку для вибору рівня тестування. 📈
 
-### GET /feedback
+- **Вікторина**: `/quiz`
+  - Відображає сторінку з вікториною. 🧠
 
-- **Summary**: Provides the feedback form.
-- **Response**: Renders `feedback.ejs`.
+- **Результати вікторини**: `/quiz-result`
+  - Показує результати тестування після його завершення. 🏆
 
-### POST /feedback
+- **Зворотний зв'язок**: `/feedback`
+  - Отримання форми для зворотного зв'язку (GET) та додавання нового відгуку (POST). 💬
 
-- **Summary**: Adds new feedback.
-- **Request Body**: JSON with `name`, `email`, and `message`.
-- **Responses**:
-  - `201`: Feedback added successfully.
-  - `400`: Bad request.
-  - `500`: Internal server error.
+- **Перегляд всіх питань**: `/view-questions`
+  - Відображає всі питання, що зберігаються у файлі. 📚
 
-### GET /feedbacks
+- **Додавання питання**: `/add-question`
+  - Форма для додавання нового питання. ✍️
 
-- **Summary**: Retrieves all feedbacks.
-- **Response**: JSON list of feedbacks.
+- **Привітання**: `/congratulations`
+  - Відображає сторінку з привітанням після завершення тестування. 🎉
 
-### GET /congratulations
+### Шаблони 🖼️
 
-- **Summary**: Displays a congratulations page after quiz completion.
-- **Response**: Renders `congratulations.ejs`.
+- **`views/index.ejs`**: Головна сторінка
+- **`views/select-language.ejs`**: Сторінка вибору мови
+- **`views/select-level.ejs`**: Сторінка вибору рівня
+- **`views/quiz.ejs`**: Сторінка вікторини
+- **`views/quiz-result.ejs`**: Сторінка результатів вікторини
+- **`views/feedback.ejs`**: Сторінка зворотного зв'язку
+- **`views/view-questions.ejs`**: Сторінка перегляду питань
+- **`views/add-question.ejs`**: Сторінка додавання питання
+- **`views/congratulations.ejs`**: Сторінка привітання
 
-### POST /start
+## Документація API (Swagger) 📖
 
-- **Summary**: Starts the quiz process by setting user’s name.
-- **Request Body**: `name`.
-- **Response**: Redirects to `/select-language`.
+Документація API доступна за адресою:
 
-### GET /select-language
+```
+http://localhost:3001/api-docs
+```
 
-- **Summary**: Displays the language selection page.
-- **Response**: Renders `select-language.ejs`.
+## Файли даних 📁
 
-### POST /select-language
+- **`feedback.json`**: Файл для зберігання відгуків
+- **`results.json`**: Файл для зберігання результатів тестування
+- **`questions.json`**: Файл для зберігання питань
 
-- **Summary**: Sets the language and redirects to level selection.
-- **Request Body**: `language`.
-- **Response**: Redirects to `/select-level`.
+## Помилки та обробка ⚠️
 
-### GET /select-level
+Веб-додаток обробляє помилки за допомогою загального обробника помилок, який відображає повідомлення про помилку у випадку несправностей.
 
-- **Summary**: Displays the level selection page.
-- **Response**: Renders `select-level.ejs`.
+## Підтримка 🆘
 
-### POST /select-level
+Для підтримки або запитів щодо проекту, будь ласка, звертайтесь до розробника через [контактні дані](#).
 
-- **Summary**: Sets the level and initializes question index.
-- **Request Body**: `level`.
-- **Response**: Redirects to `/questions`.
+---
 
-### GET /questions
-
-- **Summary**: Displays questions based on user’s level.
-- **Response**: Renders `questions.ejs`.
-
-### POST /answer
-
-- **Summary**: Processes the answer and redirects based on correctness.
-- **Request Body**: `answer` and `questionIndex`.
-- **Response**: Redirects to `/questions` with correctness query.
-
-### GET /view-questions
-
-- **Summary**: Displays all questions.
-- **Response**: Renders `view-questions.ejs`.
-
-### GET /add-question
-
-- **Summary**: Provides the page to add new questions.
-- **Response**: Renders `add-question.ejs`.
-
-## Swagger Documentation
-
-API documentation is available at `/api-docs`. It includes details for the endpoints and request/response formats.
-
-## Folder Structure
-
-- **`public/`**: Static files such as HTML, CSS, and JavaScript.
-- **`views/`**: EJS templates for dynamic rendering.
-- **`swagger/`**: Swagger configuration and setup.
-- **`feedback.json`**: Stores user feedback.
-- **`results.json`**: Stores quiz results.
-- **`questions.json`**: Stores quiz questions.
-
-## License
-
-This project is licensed under the MIT License.
+Сподіваюся, це README буде зручнішим і приємнішим для читання! 😊
