@@ -24,6 +24,7 @@ public class EngineeringTests extends Tests.TestInit {
 
     private String env;
     private SoftAssert softAssert;
+    private String envi;
 
     @BeforeClass
     public void setUp() {
