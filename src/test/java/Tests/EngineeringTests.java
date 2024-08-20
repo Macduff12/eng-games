@@ -12,10 +12,32 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+import java.util.Arrays;
 import java.util.Date;
 
 public class EngineeringTests extends Tests.TestInit {
+
+    private String env;
+    private SoftAssert softAssert;
+
+    @BeforeClass
+    public void setUp() {
+        env = System.getProperty("env", "test");
+        Allure.addAttachment("Test Environment", env);
+        softAssert = new SoftAssert(); // Initialize SoftAssert
+    }
+
+    @AfterClass
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 
     @Test
     @Epic("Engineering Games Suite")
@@ -24,8 +46,8 @@ public class EngineeringTests extends Tests.TestInit {
     @Severity(io.qameta.allure.SeverityLevel.CRITICAL)
     @Owner("John Doe")
     @Issue("ENG-123")
-    @Step("Testing Engineering Games")
-    public void TestEngineering() {
+    @Step("Navigate to Engineering Games and perform actions")
+    public void testEngineering() {
         Allure.addAttachment("Test Start Time", new Date().toString());
 
         try {
@@ -42,11 +64,14 @@ public class EngineeringTests extends Tests.TestInit {
             engineeringGamesHomePage.clickTrueAnswerFirst().click();
             engineeringGamesHomePage.clickTrueAnswerSecond().click();
             engineeringGamesHomePage.clickReturnHomePage().click();
+            // Capture screenshot
+            Allure.addAttachment("Screenshot", "image/png", Arrays.toString(captureScreenshot()), "png");
         } catch (Exception e) {
             Allure.addAttachment("Exception Stack Trace", e.getMessage());
             throw e;
         } finally {
             Allure.addAttachment("Test End Time", new Date().toString());
+            softAssert.assertAll(); // Assert all soft assertions
         }
     }
 
@@ -57,8 +82,8 @@ public class EngineeringTests extends Tests.TestInit {
     @Severity(io.qameta.allure.SeverityLevel.NORMAL)
     @Owner("Jane Smith")
     @Issue("ENG-124")
-    @Step("Testing Engineering Feedback")
-    public void TestEngineeringFeedback() {
+    @Step("Submit feedback in Engineering Games")
+    public void testEngineeringFeedback() {
         Allure.addAttachment("Test Start Time", new Date().toString());
 
         try {
@@ -82,11 +107,14 @@ public class EngineeringTests extends Tests.TestInit {
             engineeringGamesFeedback.typeMessage().sendKeys("Very good service");
             engineeringGamesFeedback.clickViewFeedback().click();
             engineeringGamesFeedback.clickSendFeedback().click();
+            // Capture screenshot
+            Allure.addAttachment("Screenshot", "image/png", Arrays.toString(captureScreenshot()), "png");
         } catch (Exception e) {
             Allure.addAttachment("Exception Stack Trace", e.getMessage());
             throw e;
         } finally {
             Allure.addAttachment("Test End Time", new Date().toString());
+            softAssert.assertAll(); // Assert all soft assertions
         }
     }
 
@@ -97,8 +125,8 @@ public class EngineeringTests extends Tests.TestInit {
     @Severity(io.qameta.allure.SeverityLevel.MINOR)
     @Owner("Jane Smith")
     @Issue("ENG-125")
-    @Step("Testing Engineering Feedback with Bad Email")
-    public void TestEngineeringFeedbackNegativeWithBadEmail() {
+    @Step("Submit feedback with an invalid email")
+    public void testEngineeringFeedbackNegativeWithBadEmail() {
         Allure.addAttachment("Test Start Time", new Date().toString());
 
         try {
@@ -120,13 +148,16 @@ public class EngineeringTests extends Tests.TestInit {
             engineeringGamesFeedbackNegative.typeName().sendKeys("TestForTesting\n");
             engineeringGamesFeedbackNegative.typeEmail().sendKeys("testingemai");
             engineeringGamesFeedbackNegative.typeMessage().sendKeys("Very good service");
-            engineeringGamesFeedbackNegative.clickViewFeedback().click();
             engineeringGamesFeedbackNegative.clickSendFeedback().click();
+            engineeringGamesFeedbackNegative.clickViewFeedback().click();
+            // Capture screenshot
+            Allure.addAttachment("Screenshot", "image/png", Arrays.toString(captureScreenshot()), "png");
         } catch (Exception e) {
             Allure.addAttachment("Exception Stack Trace", e.getMessage());
             throw e;
         } finally {
             Allure.addAttachment("Test End Time", new Date().toString());
+            softAssert.assertAll(); // Assert all soft assertions
         }
     }
 
@@ -137,8 +168,8 @@ public class EngineeringTests extends Tests.TestInit {
     @Severity(io.qameta.allure.SeverityLevel.CRITICAL)
     @Owner("John Doe")
     @Issue("ENG-126")
-    @Step("Testing Engineering Add Question")
-    public void TestEngineeringAddQuestion() {
+    @Step("Add new question to Engineering Games")
+    public void testEngineeringAddQuestion() {
         Allure.addAttachment("Test Start Time", new Date().toString());
 
         try {
@@ -161,16 +192,23 @@ public class EngineeringTests extends Tests.TestInit {
             engineeringGamesAddQuestion.clickSelectLevelAdd().click();
             engineeringGamesAddQuestion.selectLevelAdd().click();
             engineeringGamesAddQuestion.clickQuestion().click();
-            engineeringGamesAddQuestion.typeQuestion().sendKeys("10 чи 9??");
+            engineeringGamesAddQuestion.typeQuestion().sendKeys("test?");
             engineeringGamesAddQuestion.typeOptions().sendKeys("Yes/n No\n");
             engineeringGamesAddQuestion.typeTrueAnswer().sendKeys("0");
             engineeringGamesAddQuestion.typeSubmit().click();
+            // Capture screenshot
+            Allure.addAttachment("Screenshot", "image/png", Arrays.toString(captureScreenshot()), "png");
         } catch (Exception e) {
             Allure.addAttachment("Exception Stack Trace", e.getMessage());
             throw e;
         } finally {
             Allure.addAttachment("Test End Time", new Date().toString());
+            softAssert.assertAll(); // Assert all soft assertions
         }
     }
-}
 
+    private byte[] captureScreenshot() {
+        // Implement the screenshot capture logic
+        return new byte[0]; // Placeholder
+    }
+}

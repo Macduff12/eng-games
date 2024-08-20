@@ -9,7 +9,7 @@ public class EngineeringGamesFeedbackNegative extends BasePage{
         super(driver);
     }
     public void navigateSite() {
-        driver.get("http://localhost:3000");
+        driver.get("http://localhost:3001");
     }
     public WebElement clickInputNameField() {
         return driver.findElement(By.xpath("//input[@type='text']"));
@@ -21,7 +21,7 @@ public class EngineeringGamesFeedbackNegative extends BasePage{
         return driver.findElement(By.xpath("//select[@name='language']"));
     }
     public WebElement selectLanguage() {
-        return driver.findElement(By.xpath("//option[@value='python']"));
+        return driver.findElement(By.xpath("//option[@value='java']"));
     }
     public WebElement clickSelectLevel() {
         return driver.findElement(By.xpath("//select[@id='level']"));
@@ -36,7 +36,7 @@ public class EngineeringGamesFeedbackNegative extends BasePage{
         return driver.findElement(By.xpath("//button[@type='submit']"));
     }
     public WebElement clickTrueAnswerFirst() {
-        return driver.findElement(By.xpath("//button[@value='3']"));
+        return driver.findElement(By.xpath("//button[@value='0']"));
     }
     public WebElement clickTrueAnswerSecond() {
         return driver.findElement(By.xpath("//button[@value='0']"));

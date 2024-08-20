@@ -10,7 +10,7 @@ public class EngineeringGamesAddQuestion extends BasePage{
     }
 
     public void navigateSite() {
-        driver.get("http://localhost:3000");
+        driver.get("http://localhost:3001");
     }
     public WebElement clickInputNameField() {
         return driver.findElement(By.xpath("//input[@type='text']"));

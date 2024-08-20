@@ -8,6 +8,6 @@ public class EngineerngGamesHomePageNegative extends BasePage{
     }
 
     public void navigateSite() {
-        driver.get("http://localhost:3000");
+        driver.get("http://localhost:3001");
     }
 }
